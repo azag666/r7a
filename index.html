@@ -1,89 +1,61 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RA7ARIA</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Animação de rato pixando</title>
+<style>
+body {
+    background-color: black;
+}
 
-    body {
-      margin: 0;
-      background: linear-gradient(to bottom, #000000, #1c1c1c);
-      font-family: 'Courier New', Courier, monospace;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      color: white;
-    }
-
-    .scene {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      height: 250px;
-      overflow: hidden;
-    }
-
-    .sprite {
-      position: absolute;
-      width: 512px; /* 8 frames * 64px */
-      height: 64px;
-      background: url('rat_sprite.png') left center no-repeat;
-      background-size: 512px 64px;
-      animation: play 1s steps(8) infinite, move 6s linear infinite;
-      bottom: 60px;
-    }
-
-    @keyframes play {
-      0% { background-position-x: 0; }
-      100% { background-position-x: -512px; }
-    }
-
-    @keyframes move {
-      0% { left: -64px; }
-      100% { left: 100%; }
-    }
-
-    .graffiti {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2.5rem;
-      font-family: 'Arial Black', sans-serif;
-      letter-spacing: 2px;
-      color: #ff3b3b;
-      text-shadow: 2px 2px 0 #000, 4px 4px 0 #111;
-      opacity: 0;
-      animation: reveal 6s linear infinite;
-    }
-
-    @keyframes reveal {
-      0% { opacity: 0; }
-      30% { opacity: 0.2; }
-      50% { opacity: 1; }
-      100% { opacity: 1; }
-    }
-
-    @media (max-width: 480px) {
-      .scene {
-        height: 200px;
-      }
-      .graffiti {
-        font-size: 2rem;
-      }
-    }
-  </style>
+canvas {
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    height: 300px;
+}
+</style>
 </head>
 <body>
-  <div class="scene">
-    <div class="sprite"></div>
-    <div class="graffiti">RA7ARIA</div>
-  </div>
+<canvas id="canvas"></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+var rat = new Image();
+rat.src = "http://googleusercontent.com/image_generation_content/1";
+
+var x = 0;
+var y = 0;
+var vx = 2;
+var vy = 2;
+var width = 64;
+var height = 64;
+var text = "RA7ARIA";
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(rat, x, y, width, height);
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    x += vx;
+    y += vy;
+
+    if (x + width > canvas.width || x < 0) {
+        vx = -vx;
+    }
+
+    if (y + height > canvas.height || y < 0) {
+        vy = -vy;
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
 </body>
 </html>
